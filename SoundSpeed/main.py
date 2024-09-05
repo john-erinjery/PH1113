@@ -32,14 +32,20 @@ for i in reader:
     x_values_.append(values[1])
     err.append(values[2])
 y_values = np.array(y_values)
+y_values = y_values/100
 ar = np.array(x_values_)
 x_values = 1/ar
+x_values *= 1000
 a, b = np.polyfit(x_values, y_values, 1)
-plt.scatter(x_values, y_values)
-plt.errorbar(x_values, y_values, [float(x) for x in x_values], ecolor="red")
-x = np.linspace(0 ,0.01, 20)
-print(err)
-plt.plot(x, a*x + b, '--', color="skyblue", label=f"slope : {round(a/1000, 3)}")
-plt.legend()
+err = np.array(err)
+err /= 100
+plt.errorbar(x_values, y_values, xerr=err, fmt='o', capsize=1, color='orange', label="Error bars")
+plt.scatter(x_values, y_values, s=10, color='skyblue')
+x = np.linspace(0, 10, 20)
+plt.plot(x, a * x + b, '--', color="skyblue", label=f"slope : {round(a, 4)}")
+plt.ylabel('$10^{2}$ Hz')
+plt.xlabel('$m^{-1}$')
+plt.title('$f$  vs  $1/{\\lambda}$')
+plt.legend(loc="upper left")
 plt.show()
     
